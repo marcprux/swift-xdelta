@@ -25,29 +25,26 @@ public struct XDelta {
     /// - See: https://www.rfc-editor.org/rfc/rfc3284
     public func createPatch(fromSourceData sourceData: Data, toTargetData targetData: Data) throws -> Data {
         return try run(encode: true, from: targetData, to: sourceData)
+    }
 
-        // not yet working…
+    private func tmpfile() -> URL {
+        URL(fileURLWithPath: "xdelta-\(UUID().uuidString).vcdiff", relativeTo: URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true))
+    }
 
-//        var result = Data()
-//        var dataIndex = sourceData.startIndex
-//
-//        try Self.process(encode: true, bufSize: bufferSize, options: options, readInputStream: { bytes, size in
-//            if dataIndex >= targetData.endIndex {
-//                return 0
-//            }
-//            sourceData[dataIndex...].copyBytes(to: UnsafeMutableRawBufferPointer(start: bytes, count: size))
-//            dataIndex += size
-//            return size // TODO: check for overflow
-//        }, readSourceBlock: { offset, bytes, size in
-//            if offset >= targetData.endIndex {
-//                return 0
-//            }
-//            targetData[offset...].copyBytes(to: UnsafeMutableRawBufferPointer(start: bytes, count: size))
-//            return size // TODO: check for overflow
-//        }, flushOutput: { bytes, size in
-//            result.append(Data(bytes: bytes, count: size))
-//        })
-//        return result
+    /// Create patch data in the `vcdiff` format. The patch can then be applied to the source data using
+    /// `applyPath` to derive the target data.
+    ///
+    /// - Note: Compressed patch blocks are not yet supported.
+    /// - See: https://www.rfc-editor.org/rfc/rfc3284
+    public func createPatch(fromSourceURL sourceURL: URL, toTargetURL targetURL: URL, patchURL: URL) throws {
+        let handle = try FileHandle(forWritingTo: patchURL)
+        defer {
+            if #available(macOS 11, iOS 14, tvOS 11, watchOS 11, *) {
+                try? handle.close()
+            }
+        }
+
+        try apply(encode: true, inURL: targetURL, srcURL: sourceURL, resultHandler: handle.write)
     }
 
     /// Apply a patch data in the `vcdiff` format. The patch may have been created using the
