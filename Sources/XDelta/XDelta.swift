@@ -79,7 +79,10 @@ public struct XDelta {
 
     private func apply(encode: Bool, useFileHandle: Bool = false, inURL: URL, srcURL: URL, resultHandler: (Data) throws -> ()) throws {
 
-        if #available(macOS 13, *), useFileHandle {
+        if #available(macOS 13, iOS 13, tvOS 13, watchOS 13, *), useFileHandle {
+            #if os(Linux) // codeHandle does not work on Linux due to missing InputStream.read()
+            try readFS()
+            #else
             guard let stream = InputStream(url: inURL) else {
                 throw Errors.cannotOpenStream(url: inURL)
             }
@@ -87,7 +90,12 @@ public struct XDelta {
 
             // don't bother using the FileHandle version, since it always copies data
             try Self.codeHandle(encode: encode, inStream: stream, srcFile: FileHandle(forReadingFrom: srcURL), options: options, bufSize: bufferSize, resultHandler: resultHandler)
+            #endif
         } else {
+            try readFS()
+        }
+
+        func readFS() throws {
             guard let srcFile = fopen(srcURL.path, "rb") else {
                 throw URLError(.fileDoesNotExist, userInfo: [NSURLErrorKey: srcURL])
             }
@@ -129,6 +137,8 @@ public struct XDelta {
         })
     }
 
+    // InputStream.read does not compile on Linux: error: cannot convert value of type 'UnsafeMutableRawPointer' to expected argument type 'UnsafeMutablePointer<UInt8>' because instance method 'read(_:maxLength:)' was not imported from C header
+    #if !os(Linux)
     /// Performs coding on a FileHandle.
     ///
     /// - Note: slower than `codeFile` due to file copies
@@ -153,6 +163,7 @@ public struct XDelta {
             try resultHandler(Data(bytes: bytes, count: count))
         })
     }
+    #endif
 
     private static func code(encode: Bool, bufSize: Int, options: Options, readInputStream: (_ bytes: UnsafeMutableRawPointer, _ size: Int) throws -> (Int), readSourceBlock: (_ offset: UInt64, _ bytes: UnsafeMutableRawPointer, _ size: Int) throws -> (Int), flushOutput: (_ bytes: UnsafeMutableRawPointer, _ count: Int) throws -> ()) throws {
         var stream = xd3_stream()
