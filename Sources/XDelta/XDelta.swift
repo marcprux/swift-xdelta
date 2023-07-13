@@ -6,8 +6,8 @@ import struct Foundation.URL
 import struct Foundation.Data
 
 public struct XDelta {
-    func applyPatch(encode: Bool = false, patchFile: URL, inURL: URL, outURL: URL, bufferSize: Int = 0x1000) throws -> Bool {
-        guard let srcFile = fopen(patchFile.path, "rb") else {
+    func apply(encode: Bool, inURL: URL, srcURL: URL, outURL: URL, bufferSize: Int = 0x1000) throws -> Bool {
+        guard let srcFile = fopen(srcURL.path, "rb") else {
             fatalError("Failed to open source file")
         }
         defer { fclose(srcFile) }
@@ -22,12 +22,12 @@ public struct XDelta {
         }
         defer { fclose(outFile) }
 
-        return code(encode: false, srcFile: inFile, inFile: srcFile, outFile: outFile, bufSize: bufferSize) == 0
+        return code(encode: encode, inFile: inFile, srcFile: srcFile, outFile: outFile, bufSize: bufferSize) == 0
     }
 
-    func code(encode: Bool,
-              srcFile: UnsafeMutablePointer<FILE>?,
+    private func code(encode: Bool,
               inFile: UnsafeMutablePointer<FILE>,
+              srcFile: UnsafeMutablePointer<FILE>?,
               outFile: UnsafeMutablePointer<FILE>,
               bufSize bsize: Int) -> Int {
 
@@ -91,11 +91,11 @@ public struct XDelta {
 
                 switch ret {
                 case XD3_INPUT.rawValue:
-                    print("XD3_INPUT")
+                    //print("XD3_INPUT")
                     continue outerLoop
 
                 case XD3_OUTPUT.rawValue:
-                    print("XD3_OUTPUT")
+                    //print("XD3_OUTPUT")
                     r = fwrite(stream.next_out, 1, stream.avail_out, outFile)
                     if r != stream.avail_out {
                         return Int(r)
@@ -104,7 +104,7 @@ public struct XDelta {
                     continue innerLoop
 
                 case XD3_GETSRCBLK.rawValue:
-                    print("XD3_GETSRCBLK %qd", source.getblkno)
+                    //print("XD3_GETSRCBLK %qd", source.getblkno)
                     r = Int(fseek(srcFile, source.blksize * Int(source.getblkno), SEEK_SET))
                     if r != 0 {
                         return Int(r)
@@ -115,21 +115,19 @@ public struct XDelta {
                     continue innerLoop
 
                 case XD3_GOTHEADER.rawValue:
-                    print("XD3_GOTHEADER")
+                    //print("XD3_GOTHEADER")
                     continue innerLoop
 
                 case XD3_WINSTART.rawValue:
-                    print("XD3_WINSTART")
+                    //print("XD3_WINSTART")
                     continue innerLoop
 
                 case XD3_WINFINISH.rawValue:
-                    print("XD3_WINFINISH")
+                    //print("XD3_WINFINISH")
                     continue innerLoop
 
                 default:
                     // TODO: throw exception
-
-                    // FIXME: magic not being loaded from tmp diff file for some reason
                     print("!!! INVALID %s %d !!!", String(cString: stream.msg), ret)
                     return Int(ret)
                 }
