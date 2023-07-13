@@ -6,25 +6,28 @@ final class XDeltaTests: XCTestCase {
         // a known vcdiff that gets from the first data blob to the second
         // create patch with:
         // xdelta3 -e -N -D -f -S - -s /tmp/file1.txt /tmp/file2.txt /tmp/deltafile.txt
-        XCTAssertEqual(try delta(d1: Data([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]), d2: Data([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])).base64EncodedString(), "1sPEAAAFCgARFQADBAEAHwACAAEAGgMACQA=")
+        XCTAssertEqual(try delta(d1: Data([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]), d2: Data([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]), options: .adler32).base64EncodedString(), "1sPEAAAFCgARFQADBAEAHwACAAEAGgMACQA=")
 
-        XCTAssertEqual(try delta(d1: Data([]), d2: Data([])).base64EncodedString(), "1sPEAAAECQAAAAAAAAAAAQ==")
-        XCTAssertEqual(try delta(d1: Data([0x00]), d2: Data([])).base64EncodedString(), "1sPEAAAECQAAAAAAAAAAAQ==")
-        XCTAssertEqual(try delta(d1: Data([]), d2: Data([0x00])).base64EncodedString(), "1sPEAAAECwEAAQEAAAEAAQAC")
-        XCTAssertEqual(try delta(d1: Data([0x00]), d2: Data([0x00])).base64EncodedString(), "1sPEAAAECwEAAQEAAAEAAQAC")
-        XCTAssertEqual(try delta(d1: Data([0x01, 0x02, 0x03]), d2: Data([0x03, 0x02, 0x01])).base64EncodedString(), "1sPEAAAEDQMAAwEAABEABwMCAQQ=")
-        XCTAssertEqual(try delta(d1: Data([0x01, 0x01, 0x01]), d2: Data([0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00])).base64EncodedString(), "1sPEAAAEDggAAgIBACsACAEApQIA")
+        XCTAssertEqual(try delta(d1: Data([]), d2: Data([]), options: .nocompress).base64EncodedString(), "1sPEAAAABQAAAAAA")
+        XCTAssertEqual(try delta(d1: Data([]), d2: Data([]), options: .adler32).base64EncodedString(), "1sPEAAAECQAAAAAAAAAAAQ==")
 
-        XCTAssertEqual(try delta(d1: Data(Array(repeating: 0x00, count: 1000)), d2: Data(Array(repeating: 0x00, count: 1001))).base64EncodedString(), "1sPEAAAFh2gAEIdpAAEEAQPpAAEAE4doAgA=")
+        XCTAssertEqual(try delta(d1: Data([0x00]), d2: Data([]), options: .adler32).base64EncodedString(), "1sPEAAAECQAAAAAAAAAAAQ==")
+        XCTAssertEqual(try delta(d1: Data([]), d2: Data([0x00]), options: .adler32).base64EncodedString(), "1sPEAAAECwEAAQEAAAEAAQAC")
+        XCTAssertEqual(try delta(d1: Data([0x00]), d2: Data([0x00]), options: .adler32).base64EncodedString(), "1sPEAAAECwEAAQEAAAEAAQAC")
+        XCTAssertEqual(try delta(d1: Data([0x01, 0x02, 0x03]), d2: Data([0x03, 0x02, 0x01]), options: .adler32).base64EncodedString(), "1sPEAAAEDQMAAwEAABEABwMCAQQ=")
+        XCTAssertEqual(try delta(d1: Data([0x01, 0x01, 0x01]), d2: Data([0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x00]), options: .adler32).base64EncodedString(), "1sPEAAAEDggAAgIBACsACAEApQIA")
 
-        XCTAssertEqual(try delta(d1: Data(Array(repeating: 0x02, count: 1000)), d2: Data(Array(repeating: 0x03, count: 1001))).base64EncodedString(), "1sPEAAAEDodpAAEDAPoqC7wDAIdp")
+        XCTAssertEqual(try delta(d1: Data(Array(repeating: 0x00, count: 1000)), d2: Data(Array(repeating: 0x00, count: 1001)), options: .nocompress).base64EncodedString(), "1sPEAAABh2gADIdpAAEEAQATh2gCAA==")
+        XCTAssertEqual(try delta(d1: Data(Array(repeating: 0x00, count: 1000)), d2: Data(Array(repeating: 0x00, count: 1001)), options: .adler32).base64EncodedString(), "1sPEAAAFh2gAEIdpAAEEAQPpAAEAE4doAgA=")
+
+        XCTAssertEqual(try delta(d1: Data(Array(repeating: 0x02, count: 1000)), d2: Data(Array(repeating: 0x03, count: 1001)), options: .adler32).base64EncodedString(), "1sPEAAAEDodpAAEDAPoqC7wDAIdp")
     }
 
     func testRandomDeltas() throws {
 
         func rndData(count: Int) -> Data {
-            // works, but slow:
-            // Data((0..<count).map({ _ in UInt8.random(in: (.min)...(.max)) }))
+            #if canImport(Darwin)
+            // optimized random buffer creation
             var data = Data(count: count)
             data.withUnsafeMutableBytes { mutableBytes in
                 if let bytes = mutableBytes.baseAddress {
@@ -32,6 +35,11 @@ final class XDeltaTests: XCTestCase {
                 }
             }
             return data
+            #else
+            // no arc4random_buf on Linux, so take the (very) slow path
+            var rnd = SystemRandomNumberGenerator()
+            return Data((0..<count).map({ _ in rnd.next(upperBound: UInt8.max) }))
+            #endif
         }
 
         // create and verify patches from some random sets of data and with random sizes
@@ -50,9 +58,10 @@ final class XDeltaTests: XCTestCase {
         }
     }
 
-    @discardableResult private func delta(d1: Data, d2: Data) throws -> Data {
-        let vcdiff = try XDelta.createPatch(fromSourceData: d1, toTargetData: d2)
-        let decoded = try XDelta.applyPatch(patchData: vcdiff, toSourceData: d1)
+    @discardableResult private func delta(d1: Data, d2: Data, options: XDelta.Options = XDelta.Options()) throws -> Data {
+        let delta = XDelta(options: options)
+        let vcdiff = try delta.createPatch(fromSourceData: d1, toTargetData: d2)
+        let decoded = try delta.applyPatch(patchData: vcdiff, toSourceData: d1)
         XCTAssertEqual(d2, decoded)
         return vcdiff
     }
