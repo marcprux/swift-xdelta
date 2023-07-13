@@ -1,4 +1,7 @@
 import XDeltaC
+#if canImport(GlibC)
+import GlibC
+#endif
 import struct Foundation.URL
 import struct Foundation.Data
 
