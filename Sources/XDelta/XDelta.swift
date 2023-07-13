@@ -79,9 +79,14 @@ public struct XDelta {
 
     private func apply(encode: Bool, useFileHandle: Bool = false, inURL: URL, srcURL: URL, resultHandler: (Data) throws -> ()) throws {
 
-        if #available(macOS 14, iOS 14, tvOS 14, watchOS 14, *), useFileHandle {
+        if #available(macOS 13, *), useFileHandle {
+            guard let stream = InputStream(url: inURL) else {
+                throw Errors.cannotOpenStream(url: inURL)
+            }
+            stream.open()
+
             // don't bother using the FileHandle version, since it always copies data
-            try Self.codeHandle(encode: encode, inFile: FileHandle(forReadingFrom: inURL), srcFile: FileHandle(forReadingFrom: srcURL), options: options, bufSize: bufferSize, resultHandler: resultHandler)
+            try Self.codeHandle(encode: encode, inStream: stream, srcFile: FileHandle(forReadingFrom: srcURL), options: options, bufSize: bufferSize, resultHandler: resultHandler)
         } else {
             guard let srcFile = fopen(srcURL.path, "rb") else {
                 throw URLError(.fileDoesNotExist, userInfo: [NSURLErrorKey: srcURL])
@@ -127,21 +132,16 @@ public struct XDelta {
     /// Performs coding on a FileHandle.
     ///
     /// - Note: slower than `codeFile` due to file copies
-    @available(macOS 14, iOS 14, tvOS 14, watchOS 14, *)
+    @available(macOS 13, iOS 13, tvOS 13, watchOS 13, *)
     private static func codeHandle(encode: Bool,
-              inFile: FileHandle,
+              inStream: InputStream,
               srcFile: FileHandle,
               options: Options,
               bufSize: Int, resultHandler: (Data) throws -> ()) throws {
         try srcFile.seek(toOffset: 0)
-        try inFile.seek(toOffset: 0)
 
         try code(encode: encode, bufSize: bufSize, options: options, readInputStream: { bytes, size in
-            guard let data = try inFile.read(upToCount: size) else {
-                return 0
-            }
-            data.copyBytes(to: UnsafeMutableRawBufferPointer(start: bytes, count: data.count))
-            return data.count
+            inStream.read(bytes, maxLength: size)
         }, readSourceBlock: { offset, bytes, size in
             try srcFile.seek(toOffset: offset)
             guard let data = try srcFile.read(upToCount: size) else {
@@ -188,7 +188,9 @@ public struct XDelta {
         var inputBufRead: Int
         readInputBuffer: repeat {
             inputBufRead = try readInputStream(inputBuf, bufSize)
-
+            if inputBufRead < 0 {
+                throw Errors.readPastEnd
+            }
             if inputBufRead < bufSize {
                 xd3_set_flags(&stream, XD3_FLUSH.rawValue | stream.flags)
             }
@@ -275,5 +277,7 @@ public struct XDelta {
 
     public enum Errors : Error {
         case inputError(code: Int32, message: String)
+        case readPastEnd
+        case cannotOpenStream(url: URL)
     }
 }

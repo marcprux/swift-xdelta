@@ -24,7 +24,6 @@ final class XDeltaTests: XCTestCase {
     }
 
     func testRandomDeltas() throws {
-
         func rndData(count: Int) -> Data {
             #if canImport(Darwin)
             // optimized random buffer creation
