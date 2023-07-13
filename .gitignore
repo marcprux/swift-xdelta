@@ -33,3 +33,4 @@ xdelta3regtest
 .*.swp
 .build
 .DS_Store
+.swiftpm

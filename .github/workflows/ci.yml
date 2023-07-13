@@ -31,12 +31,12 @@ jobs:
         run: swift test --configuration release -Xswiftc -enable-testing
 
       - name: Test iOS (Debug)
-        run: xcodebuild test -configuration Debug -scheme "XDelta" -sdk "iphonesimulator" -destination "platform=iOS Simulator,name=iPhone 14 Pro" 
+        run: xcodebuild test -configuration Debug -scheme "XDelta" -sdk "iphonesimulator" -destination "platform=iOS Simulator,name=iPhone 14 Pro" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
       - name: Test iOS (Release)
-        run: xcodebuild test -configuration Release -scheme "XDelta" -sdk "iphonesimulator" -destination "platform=iOS Simulator,name=iPhone 14 Pro" 
+        run: xcodebuild test -configuration Release -scheme "XDelta" -sdk "iphonesimulator" -destination "platform=iOS Simulator,name=iPhone 14 Pro" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
 
       - name: Test tvOS (Debug)
-        run: xcodebuild test -configuration Debug -scheme "XDelta" -sdk "appletvsimulator" -destination "platform=tvOS Simulator,name=Apple TV" 
+        run: xcodebuild test -configuration Debug -scheme "XDelta" -sdk "appletvsimulator" -destination "platform=tvOS Simulator,name=Apple TV" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
       - name: Test tvOS (Release)
-        run: xcodebuild test -configuration Release -scheme "XDelta" -sdk "appletvsimulator" -destination "platform=tvOS Simulator,name=Apple TV" 
+        run: xcodebuild test -configuration Release -scheme "XDelta" -sdk "appletvsimulator" -destination "platform=tvOS Simulator,name=Apple TV" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
 
