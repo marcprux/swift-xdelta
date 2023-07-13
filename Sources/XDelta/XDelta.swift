@@ -79,7 +79,7 @@ public struct XDelta {
 
     private func apply(encode: Bool, useFileHandle: Bool = false, inURL: URL, srcURL: URL, resultHandler: (Data) throws -> ()) throws {
 
-        if #available(macOS 13, iOS 13.4, tvOS 11, watchOS 11, *), useFileHandle {
+        if #available(macOS 13, iOS 13.4, tvOS 13.4, watchOS 13.4, *), useFileHandle {
             #if os(Linux) // codeHandle does not work on Linux due to missing InputStream.read()
             try readFS()
             #else
@@ -142,7 +142,7 @@ public struct XDelta {
     /// Performs coding on a FileHandle.
     ///
     /// - Note: slower than `codeFile` due to file copies
-    @available(macOS 13, iOS 13.4, tvOS 11, watchOS 11, *)
+    @available(macOS 13, iOS 13.4, tvOS 13.4, watchOS 13.4, *)
     private static func codeHandle(encode: Bool,
               inStream: InputStream,
               srcFile: FileHandle,
