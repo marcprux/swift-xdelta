@@ -19,6 +19,10 @@
  * interfaces -- xd3_encode_input and xd3_decode_input -- plus a dozen
  * or so related calls.  This interface is styled after Zlib. */
 
+#define SIZEOF_SIZE_T 8
+#define XD3_USE_LARGEFILE64 0
+//#define SECONDARY_LZMA 1
+
 #ifndef _XDELTA3_H_
 #define _XDELTA3_H_
 

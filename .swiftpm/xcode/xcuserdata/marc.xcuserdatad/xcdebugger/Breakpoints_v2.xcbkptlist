@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "B3ADA7B1-600F-48A5-8990-FB46E88602F4"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CAD01069-3022-406E-BD07-A52F81A19421"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Sources/XDelta/XDelta.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
+            landmarkName = "code(encode:srcFile:inFile:outFile:bufSize:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "CAD01069-3022-406E-BD07-A52F81A19421 - 952d9530e8f13a5c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.code(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "137"
+                  endingLineNumber = "137"
+                  offsetFromSymbolStart = "6496">
+               </Location>
+               <Location
+                  uuid = "CAD01069-3022-406E-BD07-A52F81A19421 - 952d9530e8f13a7d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.code(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "136"
+                  endingLineNumber = "136"
+                  offsetFromSymbolStart = "6384">
+               </Location>
+               <Location
+                  uuid = "CAD01069-3022-406E-BD07-A52F81A19421 - c912e9fdab6deb80"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.codeX(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "137"
+                  endingLineNumber = "137"
+                  offsetFromSymbolStart = "6384">
+               </Location>
+               <Location
+                  uuid = "CAD01069-3022-406E-BD07-A52F81A19421 - c912e9fdab6deb2d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.codeX(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "132"
+                  endingLineNumber = "132"
+                  offsetFromSymbolStart = "4880">
+               </Location>
+               <Location
+                  uuid = "CAD01069-3022-406E-BD07-A52F81A19421 - c912e9fdab6deb2d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.codeX(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "132"
+                  endingLineNumber = "132"
+                  offsetFromSymbolStart = "5048">
+               </Location>
+               <Location
+                  uuid = "CAD01069-3022-406E-BD07-A52F81A19421 - 952d9530e8f13512"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.code(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "131"
+                  endingLineNumber = "131"
+                  offsetFromSymbolStart = "5048">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E7D1DB5B-55B7-4E8A-996B-37A2D2D539CB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "xdelta3/xdelta3-decode.h"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "xd3_decode_bytes(stream, buf, pos, size)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6921DFC1-A80E-4DB2-9444-99A5D92BDDB3"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Sources/XDelta/XDelta.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "code(encode:srcFile:inFile:outFile:bufSize:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6921DFC1-A80E-4DB2-9444-99A5D92BDDB3 - 952d9530e8f10cee"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.code(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "2184">
+               </Location>
+               <Location
+                  uuid = "6921DFC1-A80E-4DB2-9444-99A5D92BDDB3 - 952d9530e8f10f0f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.code(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "54"
+                  endingLineNumber = "54"
+                  offsetFromSymbolStart = "2140">
+               </Location>
+               <Location
+                  uuid = "6921DFC1-A80E-4DB2-9444-99A5D92BDDB3 - 952d9530e8f10f0f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.code(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "54"
+                  endingLineNumber = "54"
+                  offsetFromSymbolStart = "2144">
+               </Location>
+               <Location
+                  uuid = "6921DFC1-A80E-4DB2-9444-99A5D92BDDB3 - 952d9530e8f10cee"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.code(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "2144">
+               </Location>
+               <Location
+                  uuid = "6921DFC1-A80E-4DB2-9444-99A5D92BDDB3 - c912e9fdab6ddd11"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.codeX(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56"
+                  offsetFromSymbolStart = "2144">
+               </Location>
+               <Location
+                  uuid = "6921DFC1-A80E-4DB2-9444-99A5D92BDDB3 - c912e9fdab6ddd11"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.codeX(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56"
+                  offsetFromSymbolStart = "2088">
+               </Location>
+               <Location
+                  uuid = "6921DFC1-A80E-4DB2-9444-99A5D92BDDB3 - 952d9530e8f10cee"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.code(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "2088">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F9B3EE89-27AE-45A3-AA00-BF19BF07E8E6"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Sources/XDelta/XDelta.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "63"
+            endingLineNumber = "63"
+            landmarkName = "code(encode:srcFile:inFile:outFile:bufSize:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "F9B3EE89-27AE-45A3-AA00-BF19BF07E8E6 - 952d9530e8f10d52"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.code(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "2320">
+               </Location>
+               <Location
+                  uuid = "F9B3EE89-27AE-45A3-AA00-BF19BF07E8E6 - 952d9530e8f10df7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.code(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "62"
+                  endingLineNumber = "62"
+                  offsetFromSymbolStart = "2412">
+               </Location>
+               <Location
+                  uuid = "F9B3EE89-27AE-45A3-AA00-BF19BF07E8E6 - 952d9530e8f10dd6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.code(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63"
+                  offsetFromSymbolStart = "2412">
+               </Location>
+               <Location
+                  uuid = "F9B3EE89-27AE-45A3-AA00-BF19BF07E8E6 - c912e9fdab6ddc69"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.codeX(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "2412">
+               </Location>
+               <Location
+                  uuid = "F9B3EE89-27AE-45A3-AA00-BF19BF07E8E6 - c912e9fdab6ddc69"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.codeX(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "2336">
+               </Location>
+               <Location
+                  uuid = "F9B3EE89-27AE-45A3-AA00-BF19BF07E8E6 - 952d9530e8f10dd6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "XDelta.XDelta.code(encode: Swift.Bool, srcFile: Swift.Optional&lt;Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;&gt;, inFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, outFile: Swift.UnsafeMutablePointer&lt;__C.__sFILE&gt;, bufSize: Swift.Int) -&gt; Swift.Int"
+                  moduleName = "XDeltaTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/marc/Desktop/swift-xdelta/Sources/XDelta/XDelta.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "63"
+                  endingLineNumber = "63"
+                  offsetFromSymbolStart = "2336">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "359D742D-D1E9-46EB-99C0-2BF0FEF65BCD"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "xdelta3/xdelta3-decode.h"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "895"
+            endingLineNumber = "895"
+            landmarkName = "xd3_decode_input(stream)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "367D8D8B-70BA-4F0F-81D5-02FFBEA323E4"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "xdelta3/xdelta3-decode.h"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "893"
+            endingLineNumber = "893"
+            landmarkName = "xd3_decode_input(stream)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "42034642-1D35-41C9-892E-BFFC4C48B979"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "xdelta3/xdelta3-decode.h"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "891"
+            endingLineNumber = "891"
+            landmarkName = "xd3_decode_input(stream)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B9EA9926-F468-49ED-97D8-4A1268607F11"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "xdelta3/xdelta3-decode.h"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "898"
+            endingLineNumber = "898"
+            landmarkName = "xd3_decode_input(stream)"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
