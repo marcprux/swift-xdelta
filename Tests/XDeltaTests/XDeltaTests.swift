@@ -58,11 +58,32 @@ final class XDeltaTests: XCTestCase {
         }
     }
 
-    @discardableResult private func delta(d1: Data, d2: Data, options: XDelta.Options = XDelta.Options()) throws -> Data {
+    @discardableResult private func delta(urlMode: Bool = true, d1: Data, d2: Data, options: XDelta.Options = XDelta.Options()) throws -> Data {
         let delta = XDelta(options: options)
-        let vcdiff = try delta.createPatch(fromSourceData: d1, toTargetData: d2)
-        let decoded = try delta.applyPatch(patchData: vcdiff, toSourceData: d1)
-        XCTAssertEqual(d2, decoded)
-        return vcdiff
+
+        if urlMode {
+            func tmpfile(_ data: Data? = nil) throws -> URL {
+                let tmpURL = URL(fileURLWithPath: "xdelta-\(UUID().uuidString)", isDirectory: false, relativeTo: URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true))
+                if let data = data {
+                    try data.write(to: tmpURL)
+                }
+                return tmpURL
+            }
+
+            let patchURL = try tmpfile(Data())
+            let f1 = try tmpfile(d1)
+            let f2 = try tmpfile(d2)
+            try delta.createPatch(fromSourceURL: f1, toTargetURL: f2, patchURL: patchURL)
+            //try print("  createPatch:", f1.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0, f2.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0, patchURL.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0)
+            try delta.applyPatch(patchURL: patchURL, toSourceURL: f1, targetURL: f2)
+            //try print("   applyPatch:", f1.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0, f2.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0, patchURL.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0)
+
+            return try Data(contentsOf: patchURL)
+        } else { // memory mode
+            let vcdiff = try delta.createPatch(fromSourceData: d1, toTargetData: d2)
+            let decoded = try delta.applyPatch(patchData: vcdiff, toSourceData: d1)
+            XCTAssertEqual(d2, decoded)
+            return vcdiff
+        }
     }
 }

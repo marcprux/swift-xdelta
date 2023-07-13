@@ -27,10 +27,6 @@ public struct XDelta {
         return try run(encode: true, from: targetData, to: sourceData)
     }
 
-    private func tmpfile() -> URL {
-        URL(fileURLWithPath: "xdelta-\(UUID().uuidString).vcdiff", relativeTo: URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true))
-    }
-
     /// Create patch data in the `vcdiff` format. The patch can then be applied to the source data using
     /// `applyPath` to derive the target data.
     ///
@@ -38,12 +34,6 @@ public struct XDelta {
     /// - See: https://www.rfc-editor.org/rfc/rfc3284
     public func createPatch(fromSourceURL sourceURL: URL, toTargetURL targetURL: URL, patchURL: URL) throws {
         let handle = try FileHandle(forWritingTo: patchURL)
-        defer {
-            if #available(macOS 11, iOS 14, tvOS 11, watchOS 11, *) {
-                try? handle.close()
-            }
-        }
-
         try apply(encode: true, inURL: targetURL, srcURL: sourceURL, resultHandler: handle.write)
     }
 
@@ -56,15 +46,27 @@ public struct XDelta {
         try run(encode: false, from: patchData, to: sourceData)
     }
 
-    private func run(encode: Bool, from d1: Data, to d2: Data) throws -> Data {
-        let tmp = NSTemporaryDirectory()
-        let fid = UUID().uuidString
 
-        let f1 = URL(fileURLWithPath: tmp + "/xdelta1-\(fid).dat")
+    /// Apply a patch data in the `vcdiff` format. The patch may have been created using the
+    /// `createPatch` function, or the `xdelta` command line tool.
+    ///
+    /// - Note: Compressed patch blocks are not yet supported, and patch files using compression (LZMA or other) will result in an error.
+    /// - See: https://www.rfc-editor.org/rfc/rfc3284
+    public func applyPatch(patchURL: URL, toSourceURL sourceURL: URL, targetURL: URL) throws {
+        let handle = try FileHandle(forWritingTo: targetURL)
+        try apply(encode: true, inURL: sourceURL, srcURL: patchURL, resultHandler: handle.write)
+    }
+
+    private func tmpfile() -> URL {
+        URL(fileURLWithPath: "xdelta-\(UUID().uuidString)", isDirectory: false, relativeTo: URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true))
+    }
+
+    private func run(encode: Bool, from d1: Data, to d2: Data) throws -> Data {
+        let f1 = tmpfile()
         try d1.write(to: f1)
         defer { try? FileManager.default.removeItem(at: f1) }
 
-        let f2 = URL(fileURLWithPath: tmp + "/xdelta2-\(fid).dat")
+        let f2 = tmpfile()
         try d2.write(to: f2)
         defer { try? FileManager.default.removeItem(at: f2) }
 
@@ -75,9 +77,9 @@ public struct XDelta {
         return result
     }
 
-    private func apply(encode: Bool, inURL: URL, srcURL: URL, resultHandler: (Data) throws -> ()) throws {
+    private func apply(encode: Bool, useFileHandle: Bool = false, inURL: URL, srcURL: URL, resultHandler: (Data) throws -> ()) throws {
 
-        if #available(macOS 11, iOS 14, tvOS 11, watchOS 11, *), ({false}()) {
+        if #available(macOS 14, iOS 14, tvOS 14, watchOS 14, *), useFileHandle {
             // don't bother using the FileHandle version, since it always copies data
             try Self.codeHandle(encode: encode, inFile: FileHandle(forReadingFrom: inURL), srcFile: FileHandle(forReadingFrom: srcURL), options: options, bufSize: bufferSize, resultHandler: resultHandler)
         } else {
@@ -125,7 +127,7 @@ public struct XDelta {
     /// Performs coding on a FileHandle.
     ///
     /// - Note: slower than `codeFile` due to file copies
-    @available(macOS 11, iOS 14, tvOS 11, watchOS 11, *)
+    @available(macOS 14, iOS 14, tvOS 14, watchOS 14, *)
     private static func codeHandle(encode: Bool,
               inFile: FileHandle,
               srcFile: FileHandle,
