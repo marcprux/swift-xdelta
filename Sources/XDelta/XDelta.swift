@@ -27,7 +27,7 @@ public struct XDelta {
         return try run(encode: true, from: targetData, to: sourceData)
 
         // not yet working…
-        
+
 //        var result = Data()
 //        var dataIndex = sourceData.startIndex
 //
@@ -80,16 +80,17 @@ public struct XDelta {
 
     private func apply(encode: Bool, inURL: URL, srcURL: URL, resultHandler: (Data) throws -> ()) throws {
 
-        if #available(macOS 11, iOS 10, tvOS 8, watchOS 8, *) {
+        if #available(macOS 11, iOS 13, tvOS 10, watchOS 10, *), ({false}()) {
+            // don't bother using the FileHandle version, since it always copies data
             try Self.codeHandle(encode: encode, inFile: FileHandle(forReadingFrom: inURL), srcFile: FileHandle(forReadingFrom: srcURL), options: options, bufSize: bufferSize, resultHandler: resultHandler)
         } else {
             guard let srcFile = fopen(srcURL.path, "rb") else {
-                fatalError("Failed to open source file")
+                throw URLError(.fileDoesNotExist, userInfo: [NSURLErrorKey: srcURL])
             }
             defer { fclose(srcFile) }
 
             guard let inFile = fopen(inURL.path, "rb") else {
-                fatalError("Failed to open target file")
+                throw URLError(.fileDoesNotExist, userInfo: [NSURLErrorKey: inURL])
             }
             defer { fclose(inFile) }
 
@@ -114,7 +115,7 @@ public struct XDelta {
         try posix(fstat(fileno(srcFile), &statbuf))
         try posix(fseek(srcFile, 0, SEEK_SET))
         try posix(fseek(inFile, 0, SEEK_SET))
-        try process(encode: encode, bufSize: bufSize, options: options, readInputStream: { bytes, size in
+        try code(encode: encode, bufSize: bufSize, options: options, readInputStream: { bytes, size in
             fread(bytes, 1, size, inFile)
         }, readSourceBlock: { offset, bytes, size in
             try posix(fseek(srcFile, .init(offset), SEEK_SET))
@@ -124,7 +125,10 @@ public struct XDelta {
         })
     }
 
-    @available(macOS 11, iOS 10, tvOS 8, watchOS 8, *)
+    /// Performs coding on a FileHandle.
+    ///
+    /// - Note: slower than `codeFile` due to file copies
+    @available(macOS 11, iOS 13, tvOS 10, watchOS 10, *)
     private static func codeHandle(encode: Bool,
               inFile: FileHandle,
               srcFile: FileHandle,
@@ -133,7 +137,7 @@ public struct XDelta {
         try srcFile.seek(toOffset: 0)
         try inFile.seek(toOffset: 0)
 
-        try process(encode: encode, bufSize: bufSize, options: options, readInputStream: { bytes, size in
+        try code(encode: encode, bufSize: bufSize, options: options, readInputStream: { bytes, size in
             guard let data = try inFile.read(upToCount: size) else {
                 return 0
             }
@@ -151,7 +155,7 @@ public struct XDelta {
         })
     }
 
-    private static func process(encode: Bool, bufSize: Int, options: Options, readInputStream: (_ bytes: UnsafeMutableRawPointer, _ size: Int) throws -> (Int), readSourceBlock: (_ offset: UInt64, _ bytes: UnsafeMutableRawPointer, _ size: Int) throws -> (Int), flushOutput: (_ bytes: UnsafeMutableRawPointer, _ count: Int) throws -> ()) throws {
+    private static func code(encode: Bool, bufSize: Int, options: Options, readInputStream: (_ bytes: UnsafeMutableRawPointer, _ size: Int) throws -> (Int), readSourceBlock: (_ offset: UInt64, _ bytes: UnsafeMutableRawPointer, _ size: Int) throws -> (Int), flushOutput: (_ bytes: UnsafeMutableRawPointer, _ count: Int) throws -> ()) throws {
         var stream = xd3_stream()
         memset(&stream, 0, MemoryLayout<xd3_stream>.size)
         defer {
