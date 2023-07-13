@@ -80,7 +80,7 @@ public struct XDelta {
 
     private func apply(encode: Bool, inURL: URL, srcURL: URL, resultHandler: (Data) throws -> ()) throws {
 
-        if #available(macOS 11, iOS 13, tvOS 10, watchOS 10, *), ({false}()) {
+        if #available(macOS 11, iOS 14, tvOS 11, watchOS 11, *), ({false}()) {
             // don't bother using the FileHandle version, since it always copies data
             try Self.codeHandle(encode: encode, inFile: FileHandle(forReadingFrom: inURL), srcFile: FileHandle(forReadingFrom: srcURL), options: options, bufSize: bufferSize, resultHandler: resultHandler)
         } else {
@@ -116,7 +116,7 @@ public struct XDelta {
         try posix(fseek(srcFile, 0, SEEK_SET))
         try posix(fseek(inFile, 0, SEEK_SET))
         try code(encode: encode, bufSize: bufSize, options: options, readInputStream: { bytes, size in
-            fread(bytes, 1, size, inFile)
+            return fread(bytes, 1, size, inFile)
         }, readSourceBlock: { offset, bytes, size in
             try posix(fseek(srcFile, .init(offset), SEEK_SET))
             return fread(bytes, 1, size, srcFile)
@@ -128,7 +128,7 @@ public struct XDelta {
     /// Performs coding on a FileHandle.
     ///
     /// - Note: slower than `codeFile` due to file copies
-    @available(macOS 11, iOS 13, tvOS 10, watchOS 10, *)
+    @available(macOS 11, iOS 14, tvOS 11, watchOS 11, *)
     private static func codeHandle(encode: Bool,
               inFile: FileHandle,
               srcFile: FileHandle,
