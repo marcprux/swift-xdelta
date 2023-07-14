@@ -26,9 +26,9 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Test watchOS (Debug)
-        run: xcodebuild test -configuration Debug -scheme "swift-xdelta" -sdk "watchsimulator" -destination "platform=watchOS Simulator,name=Apple Watch Series 6 - 44mm" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
+        run: xcodebuild test -configuration Debug -scheme "swift-xdelta" -sdk "watchsimulator" -destination "platform=watchOS Simulator,name=Apple Watch Series 8 (45mm)" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
       - name: Test watchOS (Release)
-        run: xcodebuild test -configuration Release -scheme "swift-xdelta" -sdk "watchsimulator" -destination "platform=watchOS Simulator,name=Apple Watch Series 6 - 44mm" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
+        run: xcodebuild test -configuration Release -scheme "swift-xdelta" -sdk "watchsimulator" -destination "platform=watchOS Simulator,name=Apple Watch Series 8 (45mm)" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
 
       - name: Test (Debug)
         run: swift test --configuration debug
