@@ -2,7 +2,7 @@
 
 Xdelta is an library that computes changes between a source and target file, and can later apply those changes to the source file to derive the target file. These changes (deltas) are similar to the output of the “diff” program in that they may be used to store and transmit only the changes between files. 
 
-This is useful for optimizing the distribution of changes to large files over potentially slow or expensive data connections, such as when making updates to large online assets for mobile or embedded applications.
+This is useful for optimizing the distribution of changes to large files over potentially slow or expensive data connections, such as when making updates to large online assets for mobile or embedded applications. 
 
 The `xdelta` library is an encoder and decoder that can write and read the VCDIFF format described in [RFC 3284 : The VCDIFF Generic Differencing and Compression Data Format](https://www.rfc-editor.org/rfc/rfc3284). 
 The encoder uses the [Bentley/McIlroy technique](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.11.8470&rep=rep1&type=pdf) for finding matches between the source and target data. 
@@ -33,7 +33,7 @@ Once you have your Swift package set up, adding swift-xdelta as a dependency is 
 
 ```swift
 dependencies: [
-	.package(url: "https://github.com/marcprux/swift-xdelta.git", .from(from: "0.0.3"))
+  .package(url: "https://github.com/marcprux/swift-xdelta.git", .from(from: "1.0.0"))
 ]
 ```
 

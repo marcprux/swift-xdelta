@@ -30,18 +30,18 @@ jobs:
       - name: Test watchOS (Release)
         run: xcodebuild test -configuration Release -scheme "swift-xdelta" -sdk "watchsimulator" -destination "platform=watchOS Simulator,name=Apple Watch Series 8 (45mm)" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
 
-      - name: Test (Debug)
-        run: swift test --configuration debug
-      - name: Test (Release)
-        run: swift test --configuration release -Xswiftc -enable-testing
+      - name: Test tvOS (Debug)
+        run: xcodebuild test -configuration Debug -scheme "swift-xdelta" -sdk "appletvsimulator" -destination "platform=tvOS Simulator,name=Apple TV" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
+      - name: Test tvOS (Release)
+        run: xcodebuild test -configuration Release -scheme "swift-xdelta" -sdk "appletvsimulator" -destination "platform=tvOS Simulator,name=Apple TV" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
 
       - name: Test iOS (Debug)
         run: xcodebuild test -configuration Debug -scheme "swift-xdelta" -sdk "iphonesimulator" -destination "platform=iOS Simulator,name=iPhone 14 Pro" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
       - name: Test iOS (Release)
         run: xcodebuild test -configuration Release -scheme "swift-xdelta" -sdk "iphonesimulator" -destination "platform=iOS Simulator,name=iPhone 14 Pro" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
 
-      - name: Test tvOS (Debug)
-        run: xcodebuild test -configuration Debug -scheme "swift-xdelta" -sdk "appletvsimulator" -destination "platform=tvOS Simulator,name=Apple TV" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
-      - name: Test tvOS (Release)
-        run: xcodebuild test -configuration Release -scheme "swift-xdelta" -sdk "appletvsimulator" -destination "platform=tvOS Simulator,name=Apple TV" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
+      - name: Test macOS SPM (Debug)
+        run: swift test --configuration debug
+      - name: Test macOS SPM (Release)
+        run: swift test --configuration release -Xswiftc -enable-testing
 
