@@ -25,6 +25,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Test watchOS (Debug)
+        run: xcodebuild test -configuration Debug -scheme "swift-xdelta" -sdk "watchsimulator" -destination "platform=watchOS Simulator,name=Apple Watch Series 6 - 44mm" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
+      - name: Test watchOS (Release)
+        run: xcodebuild test -configuration Release -scheme "swift-xdelta" -sdk "watchsimulator" -destination "platform=watchOS Simulator,name=Apple Watch Series 6 - 44mm" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
+
       - name: Test (Debug)
         run: swift test --configuration debug
       - name: Test (Release)
@@ -36,9 +41,7 @@ jobs:
         run: xcodebuild test -configuration Release -scheme "swift-xdelta" -sdk "iphonesimulator" -destination "platform=iOS Simulator,name=iPhone 14 Pro" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
 
       - name: Test tvOS (Debug)
-        if: false
         run: xcodebuild test -configuration Debug -scheme "swift-xdelta" -sdk "appletvsimulator" -destination "platform=tvOS Simulator,name=Apple TV" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
       - name: Test tvOS (Release)
-        if: false
         run: xcodebuild test -configuration Release -scheme "swift-xdelta" -sdk "appletvsimulator" -destination "platform=tvOS Simulator,name=Apple TV" ONLY_ACTIVE_ARCH=NO ENABLE_TESTABILITY=YES
 

@@ -23,18 +23,8 @@ public struct XDelta {
     ///
     /// - Note: Compressed patch blocks are not yet supported.
     /// - See: https://www.rfc-editor.org/rfc/rfc3284
-    public func createPatch(fromSourceData sourceData: Data, toTargetData targetData: Data) throws -> Data {
-        return try run(encode: true, from: targetData, to: sourceData)
-    }
-
-    /// Create patch data in the `vcdiff` format. The patch can then be applied to the source data using
-    /// `applyPath` to derive the target data.
-    ///
-    /// - Note: Compressed patch blocks are not yet supported.
-    /// - See: https://www.rfc-editor.org/rfc/rfc3284
-    public func createPatch(fromSourceURL sourceURL: URL, toTargetURL targetURL: URL, patchURL: URL) throws {
-        let handle = try FileHandle(forWritingTo: patchURL)
-        try apply(encode: true, inURL: targetURL, srcURL: sourceURL, resultHandler: handle.write)
+    public func createPatch(fromSourceURL sourceURL: URL, toTargetURL targetURL: URL, patchDataHandler resultHandler: (Data) throws -> ()) throws {
+        try apply(encode: true, inURL: targetURL, srcURL: sourceURL, resultHandler: resultHandler)
     }
 
     /// Apply a patch data in the `vcdiff` format. The patch may have been created using the
@@ -42,44 +32,13 @@ public struct XDelta {
     ///
     /// - Note: Compressed patch blocks are not yet supported, and patch files using compression (LZMA or other) will result in an error.
     /// - See: https://www.rfc-editor.org/rfc/rfc3284
-    public func applyPatch(patchData: Data, toSourceData sourceData: Data) throws -> Data {
-        try run(encode: false, from: patchData, to: sourceData)
+    public func applyPatch(toSourceURL sourceURL: URL, patchURL: URL, targetDataHandler resultHandler: (Data) throws -> ()) throws {
+        try apply(encode: false, inURL: patchURL, srcURL: sourceURL, resultHandler: resultHandler)
     }
 
+    private func apply(encode: Bool, useFileHandles: Bool = false, inURL: URL, srcURL: URL, resultHandler: (Data) throws -> ()) throws {
 
-    /// Apply a patch data in the `vcdiff` format. The patch may have been created using the
-    /// `createPatch` function, or the `xdelta` command line tool.
-    ///
-    /// - Note: Compressed patch blocks are not yet supported, and patch files using compression (LZMA or other) will result in an error.
-    /// - See: https://www.rfc-editor.org/rfc/rfc3284
-    public func applyPatch(patchURL: URL, toSourceURL sourceURL: URL, targetURL: URL) throws {
-        let handle = try FileHandle(forWritingTo: targetURL)
-        try apply(encode: true, inURL: sourceURL, srcURL: patchURL, resultHandler: handle.write)
-    }
-
-    private func tmpfile() -> URL {
-        URL(fileURLWithPath: "xdelta-\(UUID().uuidString)", isDirectory: false, relativeTo: URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true))
-    }
-
-    private func run(encode: Bool, from d1: Data, to d2: Data) throws -> Data {
-        let f1 = tmpfile()
-        try d1.write(to: f1)
-        defer { try? FileManager.default.removeItem(at: f1) }
-
-        let f2 = tmpfile()
-        try d2.write(to: f2)
-        defer { try? FileManager.default.removeItem(at: f2) }
-
-        var result = Data()
-        try apply(encode: encode, inURL: f1, srcURL: f2) {
-            result.append($0)
-        }
-        return result
-    }
-
-    private func apply(encode: Bool, useFileHandle: Bool = false, inURL: URL, srcURL: URL, resultHandler: (Data) throws -> ()) throws {
-
-        if #available(macOS 13, iOS 13.4, tvOS 13.4, watchOS 13.4, *), useFileHandle {
+        if #available(macOS 13, iOS 13.4, tvOS 13.4, watchOS 13.4, *), useFileHandles {
             #if os(Linux) // codeHandle does not work on Linux due to missing InputStream.read()
             try readFS()
             #else
@@ -132,7 +91,7 @@ public struct XDelta {
         }, readSourceBlock: { offset, bytes, size in
             try posix(fseek(srcFile, .init(offset), SEEK_SET))
             return fread(bytes, 1, size, srcFile)
-        }, flushOutput: { bytes, size in
+        }, writeTargetData: { bytes, size in
             try resultHandler(Data(bytes: bytes, count: size))
         })
     }
@@ -159,13 +118,13 @@ public struct XDelta {
             }
             data.copyBytes(to: UnsafeMutableRawBufferPointer(start: bytes, count: data.count))
             return data.count
-        }, flushOutput: { bytes, count in
+        }, writeTargetData: { bytes, count in
             try resultHandler(Data(bytes: bytes, count: count))
         })
     }
     #endif
 
-    private static func code(encode: Bool, bufSize: Int, options: Options, readInputStream: (_ bytes: UnsafeMutableRawPointer, _ size: Int) throws -> (Int), readSourceBlock: (_ offset: UInt64, _ bytes: UnsafeMutableRawPointer, _ size: Int) throws -> (Int), flushOutput: (_ bytes: UnsafeMutableRawPointer, _ count: Int) throws -> ()) throws {
+    private static func code(encode: Bool, bufSize: Int, options: Options, readInputStream: (_ bytes: UnsafeMutableRawPointer, _ size: Int) throws -> (Int), readSourceBlock: (_ offset: UInt64, _ bytes: UnsafeMutableRawPointer, _ size: Int) throws -> (Int), writeTargetData: (_ bytes: UnsafeMutableRawPointer, _ count: Int) throws -> ()) throws {
         var stream = xd3_stream()
         memset(&stream, 0, MemoryLayout<xd3_stream>.size)
         defer {
@@ -217,7 +176,7 @@ public struct XDelta {
 
                 case XD3_OUTPUT:
                     if stream.avail_out > 0 && stream.next_out != nil {
-                        try flushOutput(stream.next_out, stream.avail_out)
+                        try writeTargetData(stream.next_out, stream.avail_out)
                     }
                     xd3_consume_output(&stream)
                     continue codeStream
@@ -258,12 +217,16 @@ public struct XDelta {
         //public static let flush = Options(rawValue: XD3_FLUSH.rawValue)
 
         /// use DJW static huffman
+        @available(*, unavailable, message: "compression is not supported")
         public static let compressDJW = Options(rawValue: XD3_SEC_DJW.rawValue)
         /// use FGK adaptive huffman
+        @available(*, unavailable, message: "compression is not supported")
         public static let compressFGK = Options(rawValue: XD3_SEC_FGK.rawValue)
         /// use LZMA secondary
+        @available(*, unavailable, message: "compression is not supported")
         public static let compressLZMA = Options(rawValue: XD3_SEC_LZMA.rawValue)
 
+        @available(*, unavailable, message: "compression is not supported")
         public static let compressAll = Options(rawValue: XD3_SEC_TYPE.rawValue) // (XD3_SEC_DJW | XD3_SEC_FGK | XD3_SEC_LZMA)
 
         //public static let nodata = Options(rawValue: XD3_SEC_NODATA.rawValue)

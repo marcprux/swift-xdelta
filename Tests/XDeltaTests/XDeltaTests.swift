@@ -3,9 +3,24 @@ import XCTest
 
 final class XDeltaTests: XCTestCase {
     func testXDelta() throws {
-        // a known vcdiff that gets from the first data blob to the second
-        // create patch with:
-        // xdelta3 -e -N -D -f -S - -s /tmp/file1.txt /tmp/file2.txt /tmp/deltafile.txt
+        // demo patch:
+        /*
+         head -n 5000 /usr/share/dict/words > OLD_FILE
+         tail -n 5000 /usr/share/dict/words > NEW_FILE
+
+         # use text diff (113K)
+         diff OLD_FILE NEW_FILE > DELTA.diff
+
+         # use delta diff (23K)
+         xdelta3 -efS -D -s OLD_FILE NEW_FILE DELTA.vcdiff
+
+         # apply delta diff
+         xdelta3 -dfS -D -s OLD_FILE DELTA.vcdiff DECODED_FILE
+
+         # verify that it worked
+         diff NEW_FILE DECODED_FILE
+         */
+
         XCTAssertEqual(try delta(d1: Data([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]), d2: Data([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]), options: .adler32).base64EncodedString(), "1sPEAAAFCgARFQADBAEAHwACAAEAGgMACQA=")
 
         XCTAssertEqual(try delta(d1: Data([]), d2: Data([]), options: .nocompress).base64EncodedString(), "1sPEAAAABQAAAAAA")
@@ -23,7 +38,7 @@ final class XDeltaTests: XCTestCase {
         XCTAssertEqual(try delta(d1: Data(Array(repeating: 0x02, count: 1000)), d2: Data(Array(repeating: 0x03, count: 1001)), options: .adler32).base64EncodedString(), "1sPEAAAEDodpAAEDAPoqC7wDAIdp")
     }
 
-    func testRandomDeltas() throws {
+    func testXRandomDeltas() throws {
         func rndData(count: Int) -> Data {
             #if canImport(Darwin)
             // optimized random buffer creation
@@ -57,32 +72,45 @@ final class XDeltaTests: XCTestCase {
         }
     }
 
-    @discardableResult private func delta(urlMode: Bool = true, d1: Data, d2: Data, options: XDelta.Options = XDelta.Options()) throws -> Data {
+    @discardableResult private func delta(verify: Bool = true, d1 sourceData: Data, d2 targetData: Data, options: XDelta.Options = XDelta.Options()) throws -> Data {
         let delta = XDelta(options: options)
 
-        if urlMode {
-            func tmpfile(_ data: Data? = nil) throws -> URL {
-                let tmpURL = URL(fileURLWithPath: "xdelta-\(UUID().uuidString)", isDirectory: false, relativeTo: URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true))
-                if let data = data {
-                    try data.write(to: tmpURL)
-                }
-                return tmpURL
+        func tmpfile(_ data: Data? = nil) throws -> URL {
+            let tmpURL = URL(fileURLWithPath: "xdelta-\(UUID().uuidString)", isDirectory: false, relativeTo: URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true))
+            if let data = data {
+                try data.write(to: tmpURL)
             }
-
-            let patchURL = try tmpfile(Data())
-            let f1 = try tmpfile(d1)
-            let f2 = try tmpfile(d2)
-            try delta.createPatch(fromSourceURL: f1, toTargetURL: f2, patchURL: patchURL)
-            //try print("  createPatch:", f1.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0, f2.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0, patchURL.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0)
-            try delta.applyPatch(patchURL: patchURL, toSourceURL: f1, targetURL: f2)
-            //try print("   applyPatch:", f1.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0, f2.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0, patchURL.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0)
-
-            return try Data(contentsOf: patchURL)
-        } else { // memory mode
-            let vcdiff = try delta.createPatch(fromSourceData: d1, toTargetData: d2)
-            let decoded = try delta.applyPatch(patchData: vcdiff, toSourceData: d1)
-            XCTAssertEqual(d2, decoded)
-            return vcdiff
+            return tmpURL
         }
+
+        let sourceURL = try tmpfile(sourceData)
+        defer { try? FileManager.default.removeItem(at: sourceURL) }
+
+        let targetURL = try tmpfile(targetData)
+        defer { try? FileManager.default.removeItem(at: targetURL) }
+
+        var patchData = Data()
+        try delta.createPatch(fromSourceURL: sourceURL, toTargetURL: targetURL) {
+            patchData += $0
+        }
+
+        if verify {
+            var patchedData = Data()
+            try delta.applyPatch(toSourceURL: sourceURL, patchURL: tmpfile(patchData)) {
+                //try Task.checkCancellation()
+                patchedData += $0
+            }
+            // now verify that the two targets are identical
+            XCTAssertEqual(targetData, patchedData)
+
+            // debug with the cli in case of differences
+            if targetData != patchedData {
+                let patchFile = try tmpfile(patchData)
+                print("xdelta3 -dfS -D -s \(sourceURL.path) \(patchFile.path) DECODED_FILE")
+                print("diff \(targetURL.path) DECODED_FILE")
+            }
+        }
+
+        return patchData
     }
 }
